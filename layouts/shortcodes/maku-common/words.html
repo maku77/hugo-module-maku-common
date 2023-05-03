@@ -55,10 +55,32 @@
     margin-top: 0.3em;
     font-weight: normal;
   }
+  .local-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+  .local-buttons button {
+    padding: 0.4em 0.6em;
+    gap: 0.5em;
+    border: solid 1px #ddd;
+  }
 </style>
 
 <div class="local-wordCount">
   登録数: {{ len $words }}（随時追加中）
+</div>
+
+<div>
+  {{- $categories := slice }}
+  {{- range $words }}
+    {{ $categories = $categories | append (partial "functions/inline-getCategory" .) }}
+  {{- end }}
+  <div class="local-buttons">
+  {{- range (uniq $categories) }}
+    <button class="local-button" onclick="location.hash = 'category={{ . }}'">{{ . }}</button>
+  {{- end }}
+  </div>
 </div>
 
 <dl>
@@ -73,6 +95,9 @@
     {{- $tags := .tags }}
     {{- $antonyms := .antonyms }}
     {{- $related := .related }}
+
+    {{- /* 単語の yomi 情報から "あ行" などのカテゴリ名を生成 */}}
+    {{- $category := partial "functions/inline-getCategory" $elem }}
 
     {{- with .copy }}
       {{- $copiedWord := index (first 1 (where $words "id" "==" .)) 0 }}
@@ -99,7 +124,7 @@
       {{- end }}
     {{- end }}
 
-    <dt>
+    <dt data-category="{{ $category }}">
       {{- with .id }}<a id="{{ . }}"></a>{{ end }}
       <span class="index">{{ add $index 1 }}. </span>
       {{ .label }}
@@ -111,7 +136,7 @@
         <div class="local-synonyms">{{ . | markdownify }}</div>
       {{- end }}
     </dt>
-    <dd{{ if .copy }} class="local-copied"{{ end }}>
+    <dd{{ if .copy }} class="local-copied"{{ end }} data-category="{{ $category }}">
       {{- with $desc }}{{ . | markdownify }}{{ end }}
 
       {{- with $antonyms }}
@@ -132,4 +157,102 @@
     </dt>
   {{- end }}
 </dl>
+
+<script>
+// 選択したカテゴリーのボタンだけをハイライト表示
+function highlightButton(category) {
+  const buttons = document.querySelectorAll('button')
+  buttons.forEach((b) => {
+    if (b.textContent === category) {
+      b.style.background = '#faa'
+    } else {
+      b.style.background = ''
+    }
+  })
+}
+
+// ボタンのハイライトをクリア
+function clearButtonHighlight() {
+  const buttons = document.querySelectorAll('button')
+  buttons.forEach((b) => b.style.background = '')
+}
+
+// 指定された ID の単語までスクロール
+function scrollToElemId(elemId) {
+  const targetElem = document.getElementById(elemId)
+  const targetPosition = targetElem.getBoundingClientRect().top
+  const offsetPosition = window.pageYOffset + targetPosition
+  window.scrollTo({ top: offsetPosition, behavior: "smooth" })
+}
+
+// カテゴリーによる単語のフィルター
+function filterCategory(category) {
+  // カテゴリー属性 (data-category) のついた要素をすべて非表示にする
+  const elems = document.querySelectorAll(`[data-category]`)
+  elems.forEach((e) => e.style.display = 'none')
+
+  // その内、引数で指定されたカテゴリーのものだけを表示する
+  const selectedElems = document.querySelectorAll(`[data-category='${category}']`);
+  selectedElems.forEach((e) => e.style.display = 'block')
+}
+
+// フィルターをクリア
+function clearFilter() {
+  const selectedElems = document.querySelectorAll(`[data-category]`)
+  selectedElems.forEach((e) => e.style.display = 'block')
+}
+
+// ハッシュフラグメントの変化でいろいろ処理（これがメインのイベント処理）
+function handleHashChanged() {
+  const hash = decodeURI(location.hash.substring(1))
+  const [_, category] = hash.split('category=')
+
+  if (category) { // ハッシュフラグメントでカテゴリが指定された場合
+    filterCategory(category)
+    highlightButton(category)
+  } else { // ページ内リンクがクリックされた場合
+    clearButtonHighlight()
+    clearFilter()
+    // ジャンプ先の単語が上記により表示されてからスクロールが必要
+    scrollToElemId(hash)
+    //setTimeout(() => scrollToElemId(hash), 500)
+  }
+}
+
+// ハッシュフラグメントの変化をハンドルする（ページの初期表示時も同じ処理を実行）
+window.addEventListener('hashchange', handleHashChanged)
+window.addEventListener('DOMContentLoaded', handleHashChanged)
+</script>
+
+{{- define "partials/functions/inline-getCategory" }}
+  {{ $word := . }}
+  {{ $category := "その他" }}
+  {{ $firstChar := substr $word.yomi 0 1 }}
+
+  {{ if not $firstChar }}
+    {{/* $category は "その他" のまま */}}
+  {{ else if in "あ い う え お" $firstChar }}
+    {{ $category = "あ行" }}
+  {{ else if in "か き く け こ が ぎ ぐ げ ご" $firstChar }}
+    {{ $category = "か行" }}
+  {{ else if in "さ し す せ そ ざ じ ず ぜ ぞ" $firstChar }}
+    {{ $category = "さ行" }}
+  {{ else if in "た ち つ て と だ ぢ づ で ど" $firstChar }}
+    {{ $category = "た行" }}
+  {{ else if in "な に ぬ ね の" $firstChar }}
+    {{ $category = "な行" }}
+  {{ else if in "は ひ ふ へ ほ ば び ぶ べ ぼ ぱ ぴ ぷ ぺ ぽ" $firstChar }}
+    {{ $category = "は行" }}
+  {{ else if in "ま み む め も" $firstChar }}
+    {{ $category = "ま行" }}
+  {{ else if in "や ゆ よ" $firstChar }}
+    {{ $category = "や行" }}
+  {{ else if in "ら り る れ ろ" $firstChar }}
+    {{ $category = "ら行" }}
+  {{ else if in "わ を ん" $firstChar }}
+    {{ $category = "わ行" }}
+  {{ end }}
+
+  {{ return $category }}
+{{- end }}
 
