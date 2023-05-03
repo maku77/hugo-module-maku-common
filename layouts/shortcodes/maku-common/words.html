@@ -210,7 +210,7 @@ function handleHashChanged() {
   if (category) { // ハッシュフラグメントでカテゴリが指定された場合
     filterCategory(category)
     highlightButton(category)
-  } else { // ページ内リンクがクリックされた場合
+  } else if (hash) { // ページ内リンクがクリックされた場合
     clearButtonHighlight()
     clearFilter()
     // ジャンプ先の単語が上記により表示されてからスクロールが必要
