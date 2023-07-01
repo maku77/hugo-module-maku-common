@@ -71,8 +71,9 @@
   登録数: {{ len $words }}（随時追加中）
 </div>
 
+<!-- カテゴリー選択ボタン -->
 <div>
-  {{- $categories := slice }}
+  {{- $categories := slice "ALL" }}
   {{- range $words }}
     {{ $categories = $categories | append (partial "functions/inline-getCategory" .) }}
   {{- end }}
@@ -171,11 +172,11 @@ function highlightButton(category) {
   })
 }
 
-// ボタンのハイライトをクリア
-function clearButtonHighlight() {
-  const buttons = document.querySelectorAll('button')
-  buttons.forEach((b) => b.style.background = '')
-}
+// ボタンのハイライトをクリア（highlightButton('ALL') を使うので現状これは使わない）
+// function clearButtonHighlight() {
+//   const buttons = document.querySelectorAll('button')
+//   buttons.forEach((b) => b.style.background = '')
+// }
 
 // 指定された ID の単語までスクロール
 function scrollToElemId(elemId) {
@@ -198,8 +199,15 @@ function filterCategory(category) {
 
 // フィルターをクリア
 function clearFilter() {
-  const selectedElems = document.querySelectorAll(`[data-category]`)
-  selectedElems.forEach((e) => e.style.display = 'block')
+  // すべての用語を表示 (display: block)
+  const elems = document.querySelectorAll(`[data-category]`)
+  elems.forEach((e) => e.style.display = 'block')
+}
+
+// イベントを発生させずにハッシュフラグメントをクリアする
+function clearHash() {
+  const newUrl = window.location.href.split('#')[0];
+  history.pushState(null, null, newUrl);
 }
 
 // ハッシュフラグメントの変化でいろいろ処理（これがメインのイベント処理）
@@ -207,15 +215,22 @@ function handleHashChanged() {
   const hash = decodeURI(location.hash.substring(1))
   const [_, category] = hash.split('category=')
 
-  if (category) { // ハッシュフラグメントでカテゴリが指定された場合
+  if (category === 'ALL') { // ALL が指定された場合
+    clearFilter()
+    highlightButton('ALL')
+    clearHash()  // URL をプレーンな状態にする
+  } else if (category) {  // ALL 以外のカテゴリが指定された場合
     filterCategory(category)
     highlightButton(category)
-  } else if (hash) { // ページ内リンクがクリックされた場合
-    clearButtonHighlight()
+  } else if (hash) {  // ページ内リンクがクリックされた場合
     clearFilter()
+    highlightButton('ALL')
+
     // ジャンプ先の単語が上記により表示されてからスクロールが必要
+    // setTimeout(() => scrollToElemId(hash), 500)
     scrollToElemId(hash)
-    //setTimeout(() => scrollToElemId(hash), 500)
+  } else {  // ハッシュフラグメントが存在しない場合（初期状態）
+    highlightButton('ALL')
   }
 }
 
