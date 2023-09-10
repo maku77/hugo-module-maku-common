@@ -4,12 +4,8 @@
 {{- $title := .Get "title" }}
 
 <figure style="text-align: center;">
-  <svg id="{{$id}}" width="{{$w}}" height="{{$h}}" style="border: solid gray 0.5px" />
-  {{- with $title }}
-    <figcaption>
-      {{- with $title }}図: {{ . }}{{ end }}
-    </figcaption>
-  {{- end }}
+  <svg id="{{$id}}" width="{{$w}}" height="{{$h}}" style="border: solid gray 0.5px"></svg>
+  {{ with $title }}<figcaption>図: {{ . }}</figcaption>{{ end }}
 </figure>
 
 <script type="module">
