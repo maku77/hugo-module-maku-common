@@ -1,0 +1,11 @@
+{{/*
+  このパーシャルは、すべてのページの `head` 要素内に配置する。
+  Frontmatter で `useMath: true` とすると、Markdown ファイル内で数式が使えるようになる。
+  インライン形式の数式は、`\\(` と `\\)` で囲み、
+  ブロック形式の数式は、`$$` と `$$` で囲む。
+*/}}
+{{- if eq .Params.useMath true }}
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+{{- end }}
