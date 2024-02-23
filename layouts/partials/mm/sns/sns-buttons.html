@@ -1,0 +1,24 @@
+{{ $pageTitle := partial "mm/func/get-page-title" . }}
+{{ $pageUrl := .Permalink }}
+{{/*
+  SVG ファイルの提供元: https://simpleicons.org/
+  SVG ファイルは static ディレクトリにおいて img タグで参照するよりも、
+  readFile 関数で assets ディレクトリにおいたファイルの内容を埋め込んで表示を高速化。
+*/}}
+<div class="mm-snsButtons">
+  <!-- はてなブックマーク -->
+  <a rel="nofollow" target="_blank"
+    href="https://b.hatena.ne.jp/entry?url={{ $pageUrl }}">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-hatena.svg" | safeHTML }}
+    </span>
+  </a>
+
+  <!-- Pocket -->
+  <a rel="nofollow" target="_blank"
+    href="https://getpocket.com/edit?url={{ $pageUrl }}&title={{ $pageTitle }}">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-pocket.svg" | safeHTML }}
+    </span>
+  </a>
+</div>

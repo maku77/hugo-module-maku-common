@@ -1,0 +1,21 @@
+.mm-snsButtons {
+  @media print { display: none; } // 印刷時は非表示
+  font-size: 0; // ボタン間のスペース文字による隙間をなくす
+
+  a {
+    background: none;
+  }
+
+  &__icon {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+
+    &:hover {
+      transition-duration: 0.5s;
+      transform: rotateX(360deg);
+      // opacity: 0.8;
+    }
+  }
+}
