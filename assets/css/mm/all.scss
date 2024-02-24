@@ -10,10 +10,10 @@
     display: inline-block;
     width: 35px;
     height: 35px;
-    margin-right: 10px;
+    margin-left: 10px;
 
     &:hover {
-      transition-duration: 0.5s;
+      transition-duration: 0.9s;
       transform: rotateX(360deg);
       // opacity: 0.8;
     }
