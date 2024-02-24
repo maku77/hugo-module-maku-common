@@ -14,6 +14,23 @@
     </span>
   </a>
 
+  <!-- Threads -->
+  <a rel="nofollow noopener noreferrer" target="_blank"
+    href="https://www.threads.net/intent/post?text={{ $pageUrl }}"
+    name="HOGE">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-threads.svg" | safeHTML }}
+    </span>
+  </a>
+
+  <!-- Facebook -->
+  <a rel="nofollow noopener noreferrer" target="_blank"
+    href="https://www.facebook.com/share.php?u={{ $pageUrl }}">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-facebook.svg" | safeHTML }}
+    </span>
+  </a>
+
   <!-- Line -->
   <a rel="nofollow noopener noreferrer" target="_blank"
     href="https://timeline.line.me/social-plugin/share?url={{ $pageUrl }}&text={{ $pageTitle }}">
