@@ -2,22 +2,23 @@
   baseof テンプレートで、head タグに下記のような属性をつけておくこと。
   prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"
 */}}
+<meta name="twitter:card" content="summary" />
 <meta property="og:site_name" content="{{ .Site.Title }}" />
 <meta property="og:title" content="{{ .Title }}" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="{{ .Permalink }}" />
 <meta property="og:locale" content="ja_JP" />
 
 {{- define "local-og-image" }}
   {{- if .Params.image }}
-    {{- $imageRes := .Resources.GetMatch .Params.image -}}
+    {{- $imageRes := .Resources.GetMatch .Params.image }}
     <meta property="og:image" content="{{ $imageRes.Permalink }}" />
     <meta property="og:image:width" content="{{ $imageRes.Width }}" />
     <meta property="og:image:height" content="{{ $imageRes.Height }}" />
   {{- else if .Parent }}
     {{- template "local-og-image" .Parent }}
   {{- else if .Site.Params.image }}
-    {{- $imageRes := resources.Get .Site.Params.image -}}
+    {{- $imageRes := resources.Get .Site.Params.image }}
     <meta property="og:image" content="{{ $imageRes.Permalink }}" />
     <meta property="og:image:width" content="{{ $imageRes.Width }}" />
     <meta property="og:image:height" content="{{ $imageRes.Height }}" />

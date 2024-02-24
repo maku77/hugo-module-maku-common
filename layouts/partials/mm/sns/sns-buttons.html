@@ -6,6 +6,14 @@
   readFile 関数で assets ディレクトリにおいたファイルの内容を埋め込んで表示を高速化。
 */}}
 <div class="mm-snsButtons">
+  <!-- X (Twitter) -->
+  <a rel="nofollow" target="_blank"
+    href="https://twitter.com/intent/tweet?url={{ $pageUrl }}">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-x.svg" | safeHTML }}
+    </span>
+  </a>
+
   <!-- はてなブックマーク -->
   <a rel="nofollow" target="_blank"
     href="https://b.hatena.ne.jp/entry?url={{ $pageUrl }}">
