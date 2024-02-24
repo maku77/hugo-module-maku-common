@@ -1,2 +1,3 @@
+{{ partial "mm/head/ogp" . -}}
 {{ $style := resources.Get "css/mm/all.scss" | toCSS | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">
