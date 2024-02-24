@@ -1,4 +1,4 @@
-{{ $pageTitle := partial "mm/func/get-page-title" . }}
+{{ $pageTitle := partial "mm/func/get-page-title" . | safeURL }}
 {{ $pageUrl := .Permalink }}
 {{/*
   SVG ファイルの提供元: https://simpleicons.org/
@@ -7,15 +7,23 @@
 */}}
 <div class="mm-snsButtons">
   <!-- X (Twitter) -->
-  <a rel="nofollow" target="_blank"
+  <a rel="nofollow noopener noreferrer" target="_blank"
     href="https://twitter.com/intent/post?url={{ $pageUrl }}">
     <span class="mm-snsButtons__icon">
       {{ readFile "assets/img/mm/sns-x.svg" | safeHTML }}
     </span>
   </a>
 
+  <!-- Line -->
+  <a rel="nofollow noopener noreferrer" target="_blank"
+    href="https://timeline.line.me/social-plugin/share?url={{ $pageUrl }}&text={{ $pageTitle }}">
+    <span class="mm-snsButtons__icon">
+      {{ readFile "assets/img/mm/sns-line.svg" | safeHTML }}
+    </span>
+  </a>
+
   <!-- はてなブックマーク -->
-  <a rel="nofollow" target="_blank"
+  <a rel="nofollow noopener noreferrer" target="_blank"
     href="https://b.hatena.ne.jp/entry?url={{ $pageUrl }}">
     <span class="mm-snsButtons__icon">
       {{ readFile "assets/img/mm/sns-hatena.svg" | safeHTML }}
@@ -23,7 +31,7 @@
   </a>
 
   <!-- Pocket -->
-  <a rel="nofollow" target="_blank"
+  <a rel="nofollow noopener noreferrer" target="_blank"
     href="https://getpocket.com/edit?url={{ $pageUrl }}&title={{ $pageTitle }}">
     <span class="mm-snsButtons__icon">
       {{ readFile "assets/img/mm/sns-pocket.svg" | safeHTML }}
