@@ -1,6 +1,7 @@
 {{ partial "mm/head/analytics" . -}}
 {{ partial "mm/head/favicon" . -}}
 {{ partial "mm/head/ogp" . -}}
+{{ partialCached "mm/ad-adsense" . -}}
 
 {{ $style := resources.Get "css/mm/all.scss" | toCSS | minify | fingerprint -}}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">
