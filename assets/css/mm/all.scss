@@ -2,6 +2,18 @@
 @import "_defines";
 @import "../_defines-custom";
 
+img {
+  aspect-ratio: attr(width) / attr(height);
+  height: auto;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+strong {
+  font-weight: bolder;
+  color: $X_COLOR_TEXT_STRONG;
+}
+
 .mm-snsButtons {
   @media print { display: none; } // 印刷時は非表示
   font-size: 0; // ボタン間のスペース文字による隙間をなくす
@@ -138,6 +150,42 @@
   }
 }
 
+// 外部リンクアイコン
+.xExternalLinkIcon::after {
+  content: url("/mm/img/external-icon.png");
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  vertical-align: middle;
+}
+
+// xImage（キャプション付き画像）
+figure.xImage {
+  display: block;
+  text-align: center;
+
+  img {
+    /* margin: 1rem auto 0.5rem auto; */
+    /* box-shadow: 0px 0px 3px 3px rgba(127, 127, 127, 0.5); */
+  }
+
+  > figcaption {
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  &_codeLink {
+    font-size: smaller;
+    a { font-weight: normal; }
+  }
+}
+
+.xLabelCode {
+  padding: 0.1em 0.6em 0.1em 0.4em;
+  border-radius: 0 0 0.9em 0;
+  border: 1px solid #aaa;
+  background: #555;
+  color: white;
+}
+
 /*
  * Note 囲い {{% note title="タイトル" %}}本文{{%/ note %}}
  */
@@ -185,6 +233,40 @@
     background: $color;
     color: white;
     font-weight: bold;
+  }
+}
+
+.xPrivateInline {
+  position: relative; /* tooltip の基準 */
+  font-size: 0.8em;
+  color: white;
+  background: $X_COLOR_PRIVATE;
+  padding: 0.3em 0.4em;
+  border-radius: 1em;
+  border: 3px double #fff;
+
+  &::before {
+    content: "🩵";
+    padding-right: 0.3em;
+    font-weight: bolder;
+  }
+
+  &_tooltip {
+    visibility: hidden;
+    position: absolute;
+    color: $X_COLOR_PRIVATE;
+    background: #ffa;
+    text-align: center;
+    border: 1px solid $X_COLOR_PRIVATE;
+    padding: 0.1em 0.4em;
+    bottom: 120%;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover &_tooltip {
+    visibility: visible;
+    opacity: 0.9;
   }
 }
 
