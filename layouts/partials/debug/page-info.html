@@ -1,0 +1,15 @@
+{{- /* Markdown ファイルのパスやフロントマターの情報を表示 */}}
+{{- if .Site.IsServer -}}
+<div class="xDebugPageInfo">
+  {{- with .File }}<b>{{ .Filename }}</b>{{ end -}}
+  <table class="xDebugPageInfo_table">
+    <tbody>
+      <tr><th>title</th><td>{{ .Params.title }}</td></tr>
+      <tr><th>linkTitle</th><td>{{ .Params.linkTitle }}</td></tr>
+      <tr><th>tags</th><td>{{ .Params.tags }}</td></tr>
+      <tr><th>aliases</th><td>{{ .Params.aliases }}</td></tr>
+      <tr><th>description</th><td>{{ .Description }}</td></tr>
+    </tbody>
+  </table>
+</div>
+{{- end }}

@@ -1,9 +1,9 @@
 {{- $title := .Get "title" | default "例" }}
 {{- $rand := delimit (seq 9 | shuffle) "" }}
-<div class="accordion">
+<div class="xAccordion">
   <input id="id-{{ $rand }}" type="checkbox">
-  <label class="accordion__title" for="id-{{ $rand }}">{{ $title }}</label>
-  <div class="accordion__body">
+  <label class="xAccordion_title" for="id-{{ $rand }}">{{ $title }}</label>
+  <div class="xAccordion_body">
     {{ .Inner }}
   </div>
 </div>

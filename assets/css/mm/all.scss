@@ -1,5 +1,7 @@
 @import "_highlight-manni";
 
+$COLOR_PRIVATE: #f03 !default;
+
 .mm-snsButtons {
   @media print { display: none; } // 印刷時は非表示
   font-size: 0; // ボタン間のスペース文字による隙間をなくす
@@ -21,3 +23,144 @@
     }
   }
 }
+
+.xAccordion {
+  /* タイトル */
+  &_title {
+    display: block;
+    padding: 0.5rem 0.7rem;
+    background: #ddd;
+    cursor: pointer;
+
+    &::before {
+      font-size: smaller;
+      color: #666;
+      content: "▶";
+      padding-right: 0.5em;
+    }
+
+    &::after {
+      font-size: smaller;
+      color: #999;
+      content: "（クリックで表示）";
+    }
+
+    &:hover {
+      background: #ccc;
+    }
+  }
+
+  &_body {
+    display: none;  /* デフォルトでは本文は非表示 */
+
+    /* 本文の共通設定 */
+    border: solid lightgray 1px;
+    padding: 0.5rem;
+  }
+
+  input {
+    display: none;  /* チェックボックスは非表示 */
+
+    /* ラベルをクリックしたら記号を変更 */
+    &:checked + .xAccordion_title::before {
+      content: "▼";
+    }
+
+    /* ラベルをクリックしたら後ろのガイド文を変更 */
+    &:checked + .xAccordion_title::after {
+      content: "（クリックで非表示）";
+    }
+
+    /* ラベルをクリックしたら本文を開く（表示） */
+    &:checked ~ .xAccordion_body {
+      display: block;
+    }
+  }
+}
+
+/*
+ * エイリアスの 7 桁 ID 表示
+ */
+.xAlias {
+  $color: $COLOR_PRIVATE;
+
+  margin: 0.5em 0;
+  color: $color;
+  text-align: right;
+  font-weight: bolder;
+
+  &_id {
+    margin-left: 0.5em;
+    background: $color;
+    color: white;
+    padding: 0.2em 0.5em;
+  }
+}
+
+.xCodeBlock {
+  &_title {
+    background: #ddd;
+    color: #333;
+    display: inline-block;
+    border-radius: 0.5em 0.5em 0 0;
+    padding: 0.2em 1em 0;
+  }
+
+  // pre は基本的に角丸だが、上にタイトル表示がある場合は左上のみ角丸にしない
+  &_title + &_code pre {
+    border-radius: 0 0.5em 0.5em;
+  }
+}
+
+.xDebugPageInfo {
+  color: black;
+  background: #fde;
+  padding: 0.5em;
+  border-left: solid 10px #f36;
+  //font-family: $FONT_CODE;
+  font-size: 0.8rem;
+
+  &_table {
+    margin: 0.2em 0;
+
+    th {
+      padding: 0 0.5em;
+      background: rgba(255, 255, 255, 0.2);
+      text-align: left;
+      border: solid 0.5px black;
+    }
+
+    td {
+      padding: 0 0.5em;
+      background: rgba(255, 255, 255, 0.4);
+      border: solid 0.5px black;
+    }
+  }
+}
+
+/*
+ * private ショートコード用 {{% private %}}本文{{%/ private %}}
+ */
+.xPrivate {
+  $color: $COLOR_PRIVATE;
+
+  position: relative;
+  border: solid 2px $color;
+  border-radius: 0.5em;
+  padding: 1.5em 1em 1em;
+  color: $color;
+
+  &::before {
+    content: "Private メモ";
+    border-radius: 0.3em;
+    position: absolute;
+    display: inline-block;
+    top: -1em;
+    left: 0.8em;
+    padding: 0 0.5em;
+    background: $color;
+    color: white;
+    font-weight: bold;
+  }
+}
+
