@@ -1,6 +1,23 @@
 @import "_highlight-manni";
 @import "_defines";
-@import "../_defines-custom";
+@import "_defines-custom";
+
+// screen-size() mixin に渡せるパラメーター
+$breakpoints: (
+  xs: $X_BREAKPOINT_EXTRA_SMALL,
+  sm: $X_BREAKPOINT_SMALL,
+  md: $X_BREAKPOINT_MEDIUM,
+  lg: $X_BREAKPOINT_LARGE,
+  xl: $X_BREAKPOINT_EXTRA_LARGE,
+);
+
+// $breakpoints で定義したブレイクポイント定数を引数で指定する
+// 例) @include screen-size(md) { /* md 以上のスタイル定義 */ }
+@mixin screen-size($size) {
+  @media (min-width: map-get($breakpoints, $size)) {
+    @content;
+  }
+}
 
 img {
   aspect-ratio: attr(width) / attr(height);
@@ -85,6 +102,52 @@ strong {
 
     /* ラベルをクリックしたら本文を開く（表示） */
     &:checked ~ .xAccordion_body {
+      display: block;
+    }
+  }
+}
+
+/*
+ * Amazon アソシエイツ
+ */
+.xAmazon {
+  a {
+    display: block;
+
+    @include screen-size(md) {
+      display: flex;
+    }
+  }
+
+  &:hover &_image {
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+  }
+
+  &_image { text-align: center; }
+  &_image img {
+    max-height: 200px;
+    min-width: 50px;
+  }
+  &_info { padding: 0.5em; }
+  &_info_title { display: block; }
+  &_info_author {
+    display: inline;
+    font-weight: normal;
+    @include screen-size(md) { margin-top: 0.5em; }
+  }
+
+  &_info_publisher {
+    display: inline;
+    font-weight: normal;
+    &::before { content: '/ '; }
+    @include screen-size(md) { margin-top: 0.5em; }
+  }
+
+  &_info_icon {
+    display: inline;
+    @include screen-size(md) {
+      margin-top: 0.5em;
       display: block;
     }
   }
