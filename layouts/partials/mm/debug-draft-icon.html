@@ -1,2 +1,2 @@
 {{- /* 記事一覧のタイトルの前に表示するドラフトアイコン（ローカルサーバのみ出力） */}}
-{{- if and .Site.IsServer .Draft -}}<span class="xDebugDraftIcon">D</span>{{- end }}
+{{- if and hugo.IsServer .Draft -}}<span class="xDebugDraftIcon">D</span>{{- end }}

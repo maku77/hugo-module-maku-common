@@ -1,5 +1,5 @@
 {{- /* エイリアスIDの表示 */}}
-{{- if and .Site.IsServer (isset $.Params "aliases") -}}
+{{- if and hugo.IsServer (isset $.Params "aliases") -}}
   <div class="xAlias">Aliases:
     {{- range $.Params.aliases }}<span class="xAlias_id">{{ . }}</span>{{- end }}
   </div>

@@ -1,5 +1,5 @@
 {{- /* Markdown ファイルのパスやフロントマターの情報を表示 */}}
-{{- if .Site.IsServer -}}
+{{- if hugo.IsServer -}}
 <div class="xDebugPageInfo">
   {{- with .File }}<b>{{ .Filename }}</b>{{ end -}}
   <table class="xDebugPageInfo_table">
