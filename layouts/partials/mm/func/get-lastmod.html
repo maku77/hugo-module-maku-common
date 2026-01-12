@@ -1,0 +1,15 @@
+{{/*
+  Returns the lastmod for a page as time.Time.
+  If .Params.lastmodSage is set, parses it and returns as time.Time.
+  Otherwise, returns .Lastmod.
+
+  Usage:
+    {{ $lastmod := partial "mm/func/get-lastmod.html" . }}
+    最終更新: {{ $lastmod.Format "2006-01-02" }}
+*/}}
+{{- $page := . }}
+{{- $result := $page.Lastmod }}
+{{- if $page.Params.lastmodSage }}
+  {{- $result = time.AsTime $page.Params.lastmodSage }}
+{{- end }}
+{{- return $result }}

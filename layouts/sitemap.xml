@@ -5,9 +5,8 @@
   {{- if ne .Params.noindex true }}
   <url>
     <loc>{{ .Permalink }}</loc>
-    {{- if not .Lastmod.IsZero }}
-    <lastmod>{{ .Lastmod.Format "2006-01-02" }}</lastmod>
-    {{- end }}
+    {{- $lastmod := partial "mm/func/get-lastmod.html" . }}
+    <lastmod>{{ $lastmod.Format "2006-01-02" }}</lastmod>
     {{- with .Sitemap.ChangeFreq }}
     <changefreq>{{ . }}</changefreq>
     {{- end }}
