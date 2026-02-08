@@ -1,10 +1,24 @@
-{{- $src := .Get "src" -}}
+{{- /* 先頭の "./" を取り除く */ -}}
+{{- $src := replaceRE "^\\./" "" (.Get "src") -}}
 {{- $caption := .Get "caption" -}}
-{{- $basename := replaceRE ".*/(.+)" "$1" $src -}}
 
-{{- /* ページまたぎでリンク切れを防ぐおまじない */}}
-{{- $res := .Page.Resources.GetMatch $src }}
-{{- if $res }}
-  {{- $src = $res.RelPermalink }}
-{{- end }}
-<a href="{{ $src }}">{{ or $caption $basename }}</a>
+{{- if (hasSuffix $src ".html") -}}
+  {{- /* src が .html の場合だけ FromString + Publish で静的 HTML を生成 */ -}}
+  {{- with $.Page.Resources.Get $src }}
+    {{- $res := . -}}
+    {{- $publishPath := urls.JoinPath $.Page.RelPermalink $res.Name -}}
+    {{- $out := resources.FromString $publishPath $res.Content -}}
+    {{- /* 生成した HTML 自体へのリンク（.RelPermalink を呼ぶことで .Publish される） */ -}}
+    <a href="{{ $out.RelPermalink }}">{{ or $caption $src }}</a>
+  {{- else -}}
+    {{- errorf "The %q shortcode was unable to find %s. See %s" $.Name $src $.Position -}}
+  {{- end -}}
+{{- else -}}
+  {{- /* それ以外（画像やテキストなど）は、通常の Page Resource としての URL を使う */ -}}
+  {{- $res := .Page.Resources.GetMatch $src -}}
+  {{- if $res -}}
+    <a href="{{ $res.RelPermalink }}">{{ or $caption $src }}</a>
+  {{- else -}}
+    {{- errorf "The %q shortcode was unable to find %s. See %s" $.Name $src $.Position -}}
+  {{- end -}}
+{{- end -}}
