@@ -32,7 +32,9 @@ strong {
 }
 
 .mm-snsButtons {
-  @media print { display: none; } // 印刷時は非表示
+  @media print {
+    display: none;
+  } // 印刷時は非表示
   font-size: 0; // ボタン間のスペース文字による隙間をなくす
 
   a {
@@ -80,7 +82,7 @@ strong {
   }
 
   &_body {
-    display: none;  /* デフォルトでは本文は非表示 */
+    display: none; /* デフォルトでは本文は非表示 */
 
     /* 本文の共通設定 */
     border: solid lightgray 1px;
@@ -88,7 +90,7 @@ strong {
   }
 
   input {
-    display: none;  /* チェックボックスは非表示 */
+    display: none; /* チェックボックスは非表示 */
 
     /* ラベルをクリックしたら記号を変更 */
     &:checked + .xAccordion_title::before {
@@ -124,24 +126,36 @@ strong {
     opacity: 0.8;
   }
 
-  &_image { text-align: center; }
+  &_image {
+    text-align: center;
+  }
   &_image img {
     max-height: 200px;
     min-width: 50px;
   }
-  &_info { padding: 0.5em; }
-  &_info_title { display: block; }
+  &_info {
+    padding: 0.5em;
+  }
+  &_info_title {
+    display: block;
+  }
   &_info_author {
     display: inline;
     font-weight: normal;
-    @include screen-size(md) { margin-top: 0.5em; }
+    @include screen-size(md) {
+      margin-top: 0.5em;
+    }
   }
 
   &_info_publisher {
     display: inline;
     font-weight: normal;
-    &::before { content: '/ '; }
-    @include screen-size(md) { margin-top: 0.5em; }
+    &::before {
+      content: "/ ";
+    }
+    @include screen-size(md) {
+      margin-top: 0.5em;
+    }
   }
 
   &_info_icon {
@@ -245,7 +259,9 @@ figure.xImage {
 
   &_codeLink {
     font-size: smaller;
-    a { font-weight: normal; }
+    a {
+      font-weight: normal;
+    }
   }
 }
 
@@ -262,7 +278,7 @@ figure.xImage {
  */
 .xNote {
   $color: $X_COLOR_PRIMARY;
-  margin-top: 2.5em;  // 強引な調整
+  margin-top: 2.5em; // 強引な調整
   position: relative;
   border: solid 2px $color;
   border-radius: 0.5em;
@@ -294,7 +310,7 @@ figure.xImage {
   color: $color;
 
   &::before {
-    content: "Private メモ";
+    content: attr(data-title);
     border-radius: 0.3em;
     position: absolute;
     display: inline-block;
@@ -340,4 +356,3 @@ figure.xImage {
     opacity: 0.9;
   }
 }
-

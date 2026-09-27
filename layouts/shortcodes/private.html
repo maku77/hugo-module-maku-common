@@ -1,5 +1,9 @@
-{{ if hugo.IsServer }}
-<div class="xPrivate">
+{{- if hugo.IsServer -}}
+{{- $label := "Private メモ" -}}
+{{- with .Get "title" -}}
+  {{- $label = printf "Private メモ「%s」" . -}}
+{{- end -}}
+<div class="xPrivate" data-title="{{ $label }}">
 {{ .Inner }}
 </div>
-{{ end }}
+{{- end -}}
