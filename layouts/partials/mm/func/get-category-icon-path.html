@@ -1,8 +1,17 @@
 {{- $path := .Params.categoryIcon }}
 {{- if $path }}
-  {{- $res := .Resources.GetMatch $path }}
-  {{- if not $res }}{{ errorf "ERROR: categoryIcon '%s' not found in '%s'\n\n" $path .File.Dir }}{{ end }}
-  {{- $path = $res.RelPermalink }}
+  {{- if not (hasPrefix $path "/") }}
+    {{- $res := .Resources.GetMatch $path }}
+    {{- if $res }}
+      {{- $path = $res.RelPermalink }}
+    {{- else }}
+      {{- errorf "ERROR: categoryIcon '%s' not found in '%s'\n\n" $path .File.Dir }}
+    {{- end }}
+  {{- else }}
+    {{- if not (os.FileExists (printf "static%s" $path)) }}
+      {{- errorf "ERROR: categoryIcon '%s' not found in static directory\n\n" $path }}
+    {{- end }}
+  {{- end }}
 {{- else if .Parent }}
   {{- $path = partial "mm/func/get-category-icon-path" .Parent }}
 {{- end }}
